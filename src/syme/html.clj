@@ -14,7 +14,7 @@
   (html5
    [:head
     [:meta {:charset "utf-8"}]
-    [:title (if project (str project " - Syme") "Syme")]
+    [:title (if project (str project " - Sharing.io") "Sharing.io")]
     (include-css "/stylesheets/style.css" "/stylesheets/base.css"
                  "/stylesheets/skeleton.css")
     (include-css "https://fonts.googleapis.com/css?family=Passion+One:700")]
@@ -65,21 +65,15 @@
        [:input {:type :hidden :name "project" :value repo-name}]
        [:input {:type :text :name "invite" :id "invite"
                 :placeholder "users to invite (space-separated)"}]
-       [:input {:type :text :name "identity" :id "identity"
-                :value identity :placeholder "AWS Access Key"}]
-       [:input {:type :text :style "width: 320px"
-                :name "credential" :id "credential"
-                :value credential :placeholder "AWS Secret Key"}]
-       (form/drop-down "region" (->> (keys instance/ami-by-region)
-                                     (map name)
-                                     sort)
-                       "us-west-2")
-       [:input {:type :text :name "ami-id"
-                :style "width: 48%"
-                :placeholder "ami id (optional)"}]
-       [:input {:type :text :name "instance-type"
-                :style "width: 48%"
-                :placeholder "instance-type (default: m1.small)"}]
+       [:label {:for "instance-type"} "What type of instance do you want?"]
+       (form/drop-down {:id "instance-type"}
+                       "Kubernetes Cluster or Plain Machine?" ["kubernetes cluster" "plain machine"])
+       [:fieldset
+        [:legend "Packet Information"]
+        [:label {:for "project-id"} "Project Id"]
+        [:input {:type :text :name "project-id" :id "project-id"}]
+        [:label {:for "api-key"} "API Key"]
+        [:input {:type :text :name "api-key" :id "api-key"}]]
        [:hr]
        [:p {:style "float: right; margin-top: 10px; font-size: 80%"}
         "Your credentials are stored in an encrypted cookie, never"
